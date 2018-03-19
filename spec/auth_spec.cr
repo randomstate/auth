@@ -1,29 +1,19 @@
 require "./spec_helper"
-
-Auth.define_user_class User
-
-always = Always.new(AlwaysUser.new)
-never = Never.new
-
-Auth.can_use Always, Never
-
-manager = Auth::Manager.new({
-  :always => always,
-  :never  => never,
-})
-
 require "./helpers/*"
 require "http"
 
 include Auth
 
+never = Never.new
+
 describe Auth do
   it "can register a strategy by name" do
-    # manager = Auth::Manager(User).new
-    # manager.use("always", strategy = Always.new)
+    manager = Auth::Manager.new
+    always = Always.new(AlwaysUser.new)
+    manager.use :always, always
 
-    # manager.strategies.size.should eq 1
-    # manager.strategies[0].should eq strategy
+    manager.strategies.size.should eq 1
+    manager.strategies[:always].should eq always
   end
 
   it "sets user on request context when successful" do

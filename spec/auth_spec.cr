@@ -103,10 +103,28 @@ describe Auth do
       request_context = HTTP::Server::Context.new(req, resp)
 
       found_user = manager.get_user_from_session(request_context)
-      found_user.email.should eq user.email
+      found_user.email.should eq user.email unless found_user.nil?
     end
 
     it "can be used without sessions" do
+      manager = Auth::Manager.new
+      manager.use_sessions = false
+
+      user = User.new
+
+      req = HTTP::Request.new("GET", "/")
+      req.cookies["auth"] = user.email
+
+      resp = HTTP::Server::Response.new(IO::Memory.new)
+      context = HTTP::Server::Context.new(req, resp)
+
+      manager.login(user, context)
+      context.user.should eq user
+      context.response.cookies.has_key?("auth").should be_false
+
+      # If we are ignoring sessions, we will not accept any previously 'saved' users.
+      found_user = manager.get_user_from_session(context)
+      found_user.should be_nil
     end
 
     it "can be used with a custom session key" do

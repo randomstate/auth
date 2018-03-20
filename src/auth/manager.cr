@@ -53,6 +53,10 @@ module Auth
     end
 
     def get_user_from_session(context)
+      if !@use_sessions
+        return
+      end
+
       proc = @deserialize
       if !proc.nil?
         value = context.request.cookies["auth"].value

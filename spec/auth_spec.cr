@@ -151,6 +151,24 @@ describe Auth do
     end
 
     it "must be supplied a serialize/deserialize callback when using sessions" do
+      manager = Auth::Manager.new
+      manager.session_key = "custom"
+
+      user = User.new
+
+      req = HTTP::Request.new("GET", "/")
+      req.cookies["auth"] = user.email
+
+      resp = HTTP::Server::Response.new(IO::Memory.new)
+      context = HTTP::Server::Context.new(req, resp)
+
+      expect_raises SerializationError do
+        manager.login(user, context)
+      end
+
+      expect_raises DeserializationError do
+        manager.get_user_from_session(context)
+      end
     end
   end
 end

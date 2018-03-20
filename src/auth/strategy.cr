@@ -27,6 +27,21 @@ module Auth
           converter.call(result) unless result.nil?
         end
       end
+
+      class Manager
+        getter serialize : Proc({{ user_class }}, String) | Nil
+        getter deserialize : Proc(String, {{ user_class }}) | Nil
+
+        def when_serializing(&block : {{ user_class }} -> String)
+          @serialize = block
+          self
+        end
+
+        def when_deserializing(&block : String -> {{ user_class }})
+          @deserialize = block
+          self
+        end
+      end
     end
 
     class HTTP::Server

@@ -1,4 +1,7 @@
 module Auth
+  abstract class Strategy(T)
+  end
+
   macro define_user_class(user_class)
     module Auth
       abstract class Strategy(T)
@@ -23,6 +26,12 @@ module Auth
 
           converter.call(result) unless result.nil?
         end
+      end
+    end
+
+    class HTTP::Server
+      class Context
+        property user : ({{ user_class }} | Nil)
       end
     end
   end

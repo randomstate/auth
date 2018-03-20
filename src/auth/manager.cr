@@ -20,4 +20,20 @@ module Auth
       end
     end
   end
+
+  class Manager
+    def authenticate(name, context)
+      user = @strategies[name].authenticate(context)
+      login(user, context)
+    end
+
+    def login(user, context)
+      context.user = user
+      user
+    end
+
+    def logout(context)
+      context.user = nil
+    end
+  end
 end

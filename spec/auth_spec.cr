@@ -128,6 +128,26 @@ describe Auth do
     end
 
     it "can be used with a custom session key" do
+      manager = Auth::Manager.new
+      manager.session_key = "custom"
+
+      manager.when_serializing do |user|
+        user.email
+      end
+
+      user = User.new
+
+      req = HTTP::Request.new("GET", "/")
+      req.cookies["auth"] = user.email
+
+      resp = HTTP::Server::Response.new(IO::Memory.new)
+      context = HTTP::Server::Context.new(req, resp)
+
+      manager.login(user, context)
+      context.user.should eq user
+
+      context.response.cookies.has_key?("auth").should be_false
+      context.response.cookies["custom"].value.should eq user.email
     end
 
     it "must be supplied a serialize/deserialize callback when using sessions" do

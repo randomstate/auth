@@ -23,6 +23,7 @@ module Auth
 
   class Manager
     property use_sessions = true
+    property session_key = "auth"
 
     def authenticate(name, context)
       user = @strategies[name].authenticate(context)
@@ -46,7 +47,7 @@ module Auth
     private def set_session_for_user(user, context)
       proc = @serialize
       if !proc.nil?
-        context.response.cookies["auth"] = proc.call(user)
+        context.response.cookies[@session_key] = proc.call(user)
       else
         raise SerializationError.new "`when_serializing` block must supply a Proc(#{typeof(user)}, String). It must be set on Auth::Manager if using user sessions."
       end
@@ -59,7 +60,7 @@ module Auth
 
       proc = @deserialize
       if !proc.nil?
-        value = context.request.cookies["auth"].value
+        value = context.request.cookies[@session_key].value
         proc.call(value)
       else
         raise DeserializationError.new "`when_deserializing` must supply a Proc to convert a serialized representation to your user class. It must be set on Auth::Manager if using user sessions."

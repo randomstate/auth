@@ -57,19 +57,6 @@ else
 end
 ```
 
-This pipe will now guard any routes in the pipeline. It will raise an `Auth::Pipe::Unauthorized` exception if the user failed to authenticate. By default this will return a response with "Unauthorized." and a status code of 401.
-
-Inside your controller, you can now access the authenticated user like so:
-```crystal
-class MyController < ApplicationController
-
-  def index
-    authenticated_user = @context.user # typeof(authenticated_user) == (MyUser | Nil)
-  end
-
-end
-```
-
 ### Quick Start with Amber Framework
 
 Follow the instructions (detailed above):
@@ -82,6 +69,19 @@ Follow the instructions (detailed above):
 Then add this to your `config/routes.cr` file in the pipes section for the relevant route:
 ```crystal
 Auth::Pipe::Authenticate.new(manager, :strategy_name) # strategy_name is the symbol referencing your strategy, as defined when you registered your strategies with the manager
+```
+
+This pipe will now guard any routes in the pipeline. It will raise an `Auth::Pipe::Unauthorized` exception if the user failed to authenticate. By default this will return a response with "Unauthorized." and a status code of 401.
+
+Inside your controller, you can now access the authenticated user like so:
+```crystal
+class MyController < ApplicationController
+
+  def index
+    authenticated_user = @context.user # typeof(authenticated_user) == (MyUser | Nil)
+  end
+
+end
 ```
 
 ## Development

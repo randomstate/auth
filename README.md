@@ -27,15 +27,12 @@ require "auth_firebase_jwt" # or your favourite strategy implementation for this
 ## Define required context for your app
 
 # 1) Enable type-safe support for your User class. This generates the appropriate strategy base classes to support your model. It *MUST* be called.
-
 Auth.define_user_class MyUserClass
 
 # 2) List which strategies are supported. This sets up the auth manager class so that it can dynamically add and remove strategies by name. It *MUST* be called.
-
 Auth.can_use Auth::Strategies::Firebase::JWT # , MyOtherStrategy, YetAnotherStrategyClass
 
 ## Create an Auth::Manager instance
-
 manager = Auth::Manager.new
 
 ## Register your strategies with the manager
@@ -63,13 +60,27 @@ end
 
 ### Quick Start with Amber Framework
 
+Follow the instructions (detailed above):
+- Call `Auth.define_user_class`
+- Call `Auth.can_use` with your strategies as parameters
+- Create an `Auth::Manager` instance
+- Register your strategies with the manager
+- Define how your strategy should convert to your custom user model
+
+Then add this to your `config/routes.cr` file in the pipes section for the relevant route:
+```crystal
+Auth::Pipe::Authenticate.new(manager, :strategy_name) # strategy_name is the symbol referencing your strategy, as defined when you registered your strategies with the manager
+```
+
 ## Development
 
 ### Implementing Custom Strategies
 
+[[ TODO ]]
+
 ## Contributing
 
-1. Fork it ( https://github.com/[your-github-name]/auth/fork )
+1. Fork it ( https://github.com/randomstate/auth/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -77,4 +88,4 @@ end
 
 ## Contributors
 
-- [[your-github-name]](https://github.com/[your-github-name]) Connor Imrie - creator, maintainer
+- [cimrie](https://github.com/cimrie) Connor Imrie - creator, maintainer

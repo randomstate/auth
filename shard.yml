@@ -1,5 +1,5 @@
 name: auth
-version: 0.1.0
+version: 0.1.1
 
 authors:
   - Connor Imrie <3436576+CImrie@users.noreply.github.com>
@@ -7,9 +7,3 @@ authors:
 crystal: 0.24.1
 
 license: MIT
-
-development_dependencies: 
-
-  amber:
-    github: amberframework/amber
-    branch: master

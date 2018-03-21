@@ -27,9 +27,8 @@ require "auth_firebase_jwt" # or your favourite strategy implementation for this
 ## Define required context for your app
 
 # 1) Enable type-safe support for your User class. This generates the appropriate strategy base classes to support your model. It *MUST* be called.
-Auth.define_user_class MyUserClass
-
 # 2) List which strategies are supported. This sets up the auth manager class so that it can dynamically add and remove strategies by name. It *MUST* be called.
+Auth.define_user_class MyUserClass
 Auth.can_use Auth::Strategies::Firebase::JWT # , MyOtherStrategy, YetAnotherStrategyClass
 
 ## Create an Auth::Manager instance

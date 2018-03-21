@@ -14,7 +14,7 @@ module Auth::Pipe
 
     def call(context)
       if @manager.authenticate(@guard, context).nil?
-        raise Unauthorized.new
+        raise Unauthorized.new nil
       end
 
       call_next(context)

@@ -7,3 +7,9 @@ authors:
 crystal: 0.24.1
 
 license: MIT
+
+development_dependencies: 
+
+  amber:
+    github: amberframework/amber
+    branch: master
